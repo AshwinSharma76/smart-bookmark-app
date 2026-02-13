@@ -1,0 +1,30 @@
+// app/page.js
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+
+export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getUser();
+
+      if (data.user) {
+        router.push("/dashboard");
+      } else {
+        router.push("/login");
+      }
+    };
+
+    checkUser();
+  }, []);
+
+  return (
+    <div className="text-center mt-20">
+      <p>Loading...</p>
+    </div>
+  );
+}
